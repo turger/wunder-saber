@@ -1,0 +1,16 @@
+.Add_points {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 5px;
+  right: 5px;
+  background-color: #FFFFFF;
+  z-index: 10;
+}
+
+.Add_points_form {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  width: 200px;
+}

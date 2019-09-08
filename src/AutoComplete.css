@@ -1,0 +1,14 @@
+.suggestion-active {
+  background-color: #f0f;
+}
+ul.suggestions {
+  padding: 0px;
+}
+.suggestions > li {
+  list-style: none;
+  display: block;
+  text-align: left;
+  line-height: 2;
+  font-size: 20px;
+  padding-left: 5px;
+}

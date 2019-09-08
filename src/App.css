@@ -1,0 +1,5 @@
+.App {
+  position: relative;
+  min-height: 100%;
+  background-image: linear-gradient(to bottom right, #FD6287, #AA44F6);
+}

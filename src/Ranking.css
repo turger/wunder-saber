@@ -1,0 +1,53 @@
+.Ranking {
+  padding-right: 15px;
+  display: flex;
+}
+
+.Ranking img {
+  width: 45px;
+  height: 45px;
+}
+
+.Ranking_trophy {
+  animation: pop 800ms ease 1;
+  animation-fill-mode: backwards;
+}
+
+.group:nth-child(1) .Ranking_trophy {
+  animation-delay: 300ms;
+}
+
+.group:nth-child(2) .Ranking_trophy {
+  animation-delay: 500ms;
+}
+
+.group:nth-child(3) .Ranking_trophy {
+  animation-delay: 700ms;
+}
+
+.Ranking_number {
+  position: absolute;
+  margin-top: -2px;
+  margin-left: 18px;
+  font-size: 15px;
+  line-height: 2;
+  font-weight: 700;
+  font-family: 'Raleway', sans-serif;;
+  color: #fff;
+}
+
+.Ranking_star .Ranking_number {
+  margin-top: 9px;
+  margin-left: 19px;
+}
+
+.Ranking_star_bignum .Ranking_number {
+  margin-top: 10px;
+  margin-left: 15px;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); }
+  30% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
