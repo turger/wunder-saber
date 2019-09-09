@@ -68,7 +68,7 @@ export class Autocomplete extends Component {
           onKeyDown={onKeyDown}
           value={userInput}
         />
-        {showSuggestions && userInput && Object.keys(filteredSuggestions).length && (
+        {showSuggestions && userInput && Object.keys(filteredSuggestions).length !== 0 && (
           <ul className="Autocomplete_suggestions">
             {Object.keys(filteredSuggestions).map((key, index) => {
               return (

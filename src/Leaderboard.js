@@ -31,7 +31,7 @@ class Leaderboard extends Component {
 
   render() {
     const {leaderboard} = this.state
-    if (!leaderboard) return null
+    if (!leaderboard) return <span role="img" aria-label="shrug" className="Leaderboard">🤷‍</span>
 
     return(
       <div className="Leaderboard">

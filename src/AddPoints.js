@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import AutoComplete from './AutoComplete'
 import uuid from 'uuid'
-import {addSong, addRow, getLeaderboardData} from './firebase'
+import {addSong, addRow, getLeaderboardRef} from './firebase'
 import './AddPoints.css'
 
 class AddPoints extends Component {
@@ -10,21 +10,28 @@ class AddPoints extends Component {
     this.state = {
       leaderboard: null,
       expanded: false,
-      songNames: null,
+      songNames: [],
       songName: '',
       songId: null,
       name: '',
       points: '',
-      level: ''
+      level: 'Easy'
     }
   }
 
-  async componentDidMount() {
-    const leaderboard = await getLeaderboardData()
-    this.setState({
-      leaderboard,
-      songNames: Object.keys(leaderboard).map(key => ({value: leaderboard[key].songName, id: key}))
+  componentDidMount() {
+    this._leaderboardRef = getLeaderboardRef()
+    this._leaderboardRef.on('value', (snap) => {
+      const leaderboard = snap.val()
+      this.setState({
+        leaderboard,
+        songNames: leaderboard ? Object.keys(leaderboard).map(key => ({value: leaderboard[key].songName, id: key})) : []
+      })
     })
+  }
+
+  componentWillUnmount() {
+    this._gameMastersOnlineRef.off()
   }
 
   expand = () => {
@@ -55,13 +62,13 @@ class AddPoints extends Component {
       songName: '',
       songId: null,
       name: '',
-      points: ''
+      points: '',
+      level: 'Easy'
     })
   }
 
   render() {
     const {expanded, songNames} = this.state
-    if (!songNames) return null
 
     return(
       <div className="Add_points">
@@ -86,7 +93,7 @@ class AddPoints extends Component {
               Level:
               <select value={this.state.level} onChange={(e) => this.handleChange(e, 'level')}>
                 {['Easy', 'Normal', 'Hard', 'Expert', 'Expert+'].map(lvl =>
-                  <option value={lvl}>{lvl}</option>
+                  <option key={lvl} value={lvl}>{lvl}</option>
                 )}
               </select>
             </label>
