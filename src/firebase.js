@@ -21,8 +21,8 @@ export const addSong = (songId, songName) => {
   fb.database().ref(`leaderboard/${songId}`).set({songId: songId, songName})
 }
 
-export const addRow = (songId, rowId, name, points) => {
-  fb.database().ref(`leaderboard/${songId}/rows/${rowId}`).set({rowId: rowId, name, points})
+export const addRow = (songId, rowId, name, points, level) => {
+  fb.database().ref(`leaderboard/${songId}/rows/${rowId}`).set({rowId: rowId, name, points, level})
 }
 
 export const removeRow = (songId, rowId) => {

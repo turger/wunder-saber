@@ -46,14 +46,35 @@
   flex-direction: row;
   align-items: center;
   padding: 10px;
-  font-size: 25px;
 }
 
+/* Ranking width: 10%; */
+
 .Leaderboard_name {
-  width: 50%;
+  width: 35%;
 }
 
 .Leaderboard_points {
-  width: 50%;
+  width: 30%;
   text-align: right;
+}
+
+.Leaderboard_level {
+  width: 15%;
+  text-align: left;
+  padding-left: 5%;
+}
+
+/* Mobile devices */
+@media only screen and (max-width: 600px) {
+  .Leaderboard_row {
+    font-size: 4vw;
+  }
+}
+
+/* Bigger devices */
+@media only screen and (min-width: 600px) {
+  .Leaderboard_row {
+    font-size: 25px;
+  }
 }

@@ -44,6 +44,7 @@ class Leaderboard extends Component {
                   <Ranking ranking={i+1}/>
                   <div className="Leaderboard_name">{row.name}</div>
                   <div className="Leaderboard_points">{row.points}</div>
+                  <div className="Leaderboard_level">{row.level}</div>
                 </div>
               )}
             </div>

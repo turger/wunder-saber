@@ -14,7 +14,8 @@ class AddPoints extends Component {
       songName: '',
       songId: null,
       name: '',
-      points: ''
+      points: '',
+      level: ''
     }
   }
 
@@ -40,15 +41,15 @@ class AddPoints extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault()
-    const {songName, name, points} = this.state
-    if (!songName || !name || !points) return
+    const {songName, name, points, level} = this.state
+    if (!songName || !name || !points || !level) return
     let songId = this.state.songId
     if (!songId) {
       songId = uuid.v4()
       await addSong(songId, songName)
     }
     const rowId = uuid.v4()
-    await addRow(songId, rowId, name, points)
+    await addRow(songId, rowId, name, points, level)
     this.setState({
       expanded: false,
       songName: '',
@@ -64,26 +65,37 @@ class AddPoints extends Component {
 
     return(
       <div className="Add_points">
-        <button onClick={this.expand}>+</button>
         { expanded &&
-          <div className="Add_points_form">
-            <form onSubmit={this.handleSubmit}>
-              Song:
-              <AutoComplete
-                suggestions={songNames}
-                handleChange={this.handleSongChange}
-              />
-              <label>
-                Name:
-                <input type="text" value={this.state.name} onChange={(e) => this.handleChange(e, 'name')} />
-              </label>
-              <label>
-                Points:
-                <input type="text" value={this.state.points} onChange={(e) => this.handleChange(e, 'points')} />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-          </div>
+          <button onClick={this.expand}>-</button>
+        }
+        { !expanded &&
+          <button onClick={this.expand}>+</button>
+        }
+        { expanded &&
+          <form className="Add_points_form" onSubmit={this.handleSubmit}>
+            Song:
+            <AutoComplete
+              suggestions={songNames}
+              handleChange={this.handleSongChange}
+            />
+            <label>
+              Name:
+              <input type="text" value={this.state.name} onChange={(e) => this.handleChange(e, 'name')} />
+            </label>
+            <label>
+              Level:
+              <select value={this.state.level} onChange={(e) => this.handleChange(e, 'level')}>
+                {['Easy', 'Normal', 'Hard', 'Expert', 'Expert+'].map(lvl =>
+                  <option value={lvl}>{lvl}</option>
+                )}
+              </select>
+            </label>
+            <label>
+              Points:
+              <input type="text" value={this.state.points} onChange={(e) => this.handleChange(e, 'points')} />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
         }
       </div>
     )
