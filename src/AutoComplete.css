@@ -1,10 +1,7 @@
-.suggestion-active {
-  background-color: #f0f;
-}
-ul.suggestions {
+ul.Autocomplete_suggestions {
   padding: 0px;
 }
-.suggestions > li {
+.Autocomplete_suggestions > li {
   list-style: none;
   display: block;
   text-align: left;

@@ -11,6 +11,6 @@
 .Add_points_form {
   display: flex;
   flex-direction: column;
-  height: 200px;
+  min-height: 200px;
   width: 200px;
 }
