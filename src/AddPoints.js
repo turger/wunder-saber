@@ -2,6 +2,12 @@ import React, {Component} from 'react'
 import AutoComplete from './AutoComplete'
 import uuid from 'uuid'
 import {addSong, addRow, getLeaderboardRef} from './firebase'
+import {
+  getDefaultDifficulty,
+  getDefaultUsername,
+  setDefaultDifficulty,
+  setDefaultUsername
+} from './store'
 import './AddPoints.css'
 
 class AddPoints extends Component {
@@ -13,9 +19,9 @@ class AddPoints extends Component {
       songNames: [],
       songName: '',
       songId: null,
-      name: '',
+      name: getDefaultUsername(),
       points: '',
-      level: 'Easy'
+      level: getDefaultDifficulty()
     }
   }
 
@@ -61,10 +67,10 @@ class AddPoints extends Component {
       expanded: false,
       songName: '',
       songId: null,
-      name: '',
       points: '',
-      level: 'Easy'
     })
+   setDefaultDifficulty(level)
+   setDefaultUsername(name)
   }
 
   render() {
