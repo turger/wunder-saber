@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react'
-import AutoComplete from './AutoComplete'
 import uuid from 'uuid'
+import classNames from 'classnames'
+import AutoComplete from './AutoComplete'
 import {addSong, addRow, getLeaderboardRef} from './firebase'
 import {
   getDefaultDifficulty,
@@ -21,7 +22,8 @@ class AddPoints extends Component {
       songId: null,
       name: getDefaultUsername(),
       points: '',
-      level: getDefaultDifficulty()
+      level: getDefaultDifficulty(),
+      formError: false
     }
   }
 
@@ -55,7 +57,10 @@ class AddPoints extends Component {
   handleSubmit = async (e) => {
     e.preventDefault()
     const {songName, name, points, level} = this.state
-    if (!songName || !name || !points || !level) return
+    if (!songName || !name || !points || !level) {
+      this.setState({formError: true})
+      return
+    }
     let songId = this.state.songId
     if (!songId) {
       songId = uuid.v4()
@@ -68,58 +73,74 @@ class AddPoints extends Component {
       songName: '',
       songId: null,
       points: '',
+      formError: false
     })
    setDefaultDifficulty(level)
    setDefaultUsername(name)
   }
 
   render() {
-    const {expanded, songNames} = this.state
+    const {
+      expanded,
+      songNames,
+      formError,
+      songName,
+      name,
+      level,
+      points
+    } = this.state
 
     return(
-      <div className="Add_points">
+      <div className='Add_points'>
         { !expanded &&
-          <div className="Add_points_button Add_points_button_open" onClick={this.expand}>+</div>
+          <div className='Add_points_button Add_points_button_open' onClick={this.expand}>+</div>
         }
         { expanded &&
           <Fragment>
-            <form className="Add_points_form" onSubmit={this.handleSubmit}>
-              <label>
-                <div className="Add_points_label">Song:</div>
+            <form className='Add_points_form' onSubmit={this.handleSubmit}>
+              <div className='Add_points_row'>
+                <div className='Add_points_label'>Song</div>
                 <AutoComplete
                   suggestions={songNames}
                   handleChange={this.handleSongChange}
+                  className={classNames('Add_points_input', { 'Add_points_input_error': formError && !songName })}
                 />
-              </label>
-              <label>
-                <div className="Add_points_label">Name:</div>
+              </div>
+              <div className='Add_points_row'>
+                <div className='Add_points_label'>Name</div>
                 <input
-                  type="text"
-                  value={this.state.name}
+                  type='text'
+                  value={name}
                   onChange={(e) => this.handleChange(e, 'name')}
-                  data-lpignore="true"
+                  data-lpignore='true'
+                  className={classNames('Add_points_input', { 'Add_points_input_error': formError && !name })}
                 />
-              </label>
-              <label>
-                <div className="Add_points_label">Level:</div>
-                <select value={this.state.level} onChange={(e) => this.handleChange(e, 'level')}>
+              </div>
+              <div className='Add_points_row'>
+                <div className='Add_points_label'>Level</div>
+                <select
+                  value={level}
+                  onChange={(e) => this.handleChange(e, 'level')}
+                  className={classNames('Add_points_input', { 'Add_points_input_error': formError && !level })}
+                >
                   {['Easy', 'Normal', 'Hard', 'Expert', 'Expert+'].map(lvl =>
                     <option key={lvl} value={lvl}>{lvl}</option>
                   )}
                 </select>
-              </label>
-              <label>
-                <div className="Add_points_label">Points:</div>
+              </div>
+              <div className='Add_points_row'>
+                <div className='Add_points_label'>Points</div>
                 <input
-                  type="text"
-                  value={this.state.points}
+                  type='number'
+                  value={points}
                   onChange={(e) => this.handleChange(e, 'points')}
-                  data-lpignore="true"
+                  data-lpignore='true'
+                  className={classNames('Add_points_input', { 'Add_points_input_error': formError && !points })}
                 />
-              </label>
-              <input className="Add_points_submit" type="submit" value="Submit" />
+              </div>
+              <input className='Add_points_submit' type='submit' value='Submit' />
             </form>
-            <div className="Add_points_button Add_points_button_close" onClick={this.expand}>-</div>
+            <div className='Add_points_button Add_points_button_close' onClick={this.expand}>-</div>
           </Fragment>
         }
       </div>

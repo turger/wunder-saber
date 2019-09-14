@@ -1,43 +1,40 @@
 .Add_points {
   position: fixed;
-  bottom: 0px;
-  right: 0px;
+  bottom: 5px;
+  right: 10px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   z-index: 10;
-  width: 100%;
-  font-size: 20px;
 }
 
 .Add_points_button {
-  bottom: 5px;
-  margin: 5px;
+  bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   align-self: flex-end;
   width: 20px;
   height: 20px;
-  font-size: 20px;
   font-weight: bold;
   border-radius: 10px;
   color: white;
   text-shadow: -1px -1px 1px rgba(0,0,0,0.8);
   border: 5px solid transparent;
   border-bottom-color: rgba(0,0,0,0.35);
-  background: #FD6287;
   cursor: pointer;
-  outline: 0 !important;
 
-  animation: pulse 1s infinite alternate;
+  animation: pulse 2s infinite alternate;
   transition: background 0.4s, border 0.2s, margin 0.2s;
 }
 
-.Add_points_button:hover, .Add_points_button_close {
+.Add_points_button_open {
+  background: #FD6287;
+}
+
+.Add_points_button_close {
   background: #AA44F6;
-  margin-top: -1px;
   animation: none;
 }
 
@@ -48,10 +45,13 @@
 
 @keyframes pulse {
   0% {
-    margin-bottom: 3px;
+    margin-bottom: 0px;
+  }
+  80% {
+    margin-bottom: 0px;
   }
   100% {
-    margin-bottom: 9px;
+    margin-bottom: 6px;
   }
 }
 
@@ -66,47 +66,69 @@
   background-image: linear-gradient(to bottom right, #AA44F6, #FD6287);
   border: 5px solid transparent;
   border-bottom-color: rgba(0,0,0,0.35);
-  width: 300px;
+  width: 80vw;
 }
 
-.Add_points_form > label > input, select {
-  border: 0;
+.Add_points_input {
+  background-color: #ffffff;
   border: 5px solid transparent;
   border-radius: 5px;
-  width: 200px;
+  width: 85%;
   font-size: inherit;
   font-family: inherit;
   letter-spacing: inherit;
   margin: 5px;
   padding: 0;
+  color: #6408aa;
+  box-sizing: content-box;
+  -webkit-appearance: none;
+}
+
+.Add_points_input_error {
+  border: 5px solid #fc3664;
+  transition: border 0.5s linear;
 }
 
 .Add_points_label {
-  display: inline-block;
-  width: 60px;
+  text-transform: uppercase;
   margin: 0;
+  padding-left: 5px;
+  padding-top: 5px;
 }
 
 .Add_points_submit {
   display: flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-start;
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
+  align-self: center;
   font-weight: bold;
   border-radius: 10px;
-  color: white;
-  text-shadow: -1px -1px 1px rgba(0,0,0,0.8);
+  color: #ffffff;
+  text-transform: uppercase;
   border: 5px solid transparent;
   border-bottom-color: rgba(0,0,0,0.35);
-  background: #AA44F6;
+  background: rgba(170, 68, 246, 0.5);
   cursor: pointer;
   outline: 0 !important;
   margin: 10px;
+  padding: 3px 20px;
+  -webkit-appearance: none;
 }
 
 textarea:focus, input:focus, select:focus {
     outline: none;
+}
+
+/* Mobile devices */
+@media only screen and (max-width: 600px) {
+  .Add_points {
+    font-size: 3vw;
+  }
+}
+
+/* Bigger devices */
+@media only screen and (min-width: 600px) {
+  .Add_points {
+    font-size: 16px;
+  }
 }

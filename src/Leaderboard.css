@@ -4,6 +4,7 @@
   align-items: center;
   margin-top: 40px;
   color: #454545;
+  text-transform: capitalize;
 }
 
 .Leaderboard_song {

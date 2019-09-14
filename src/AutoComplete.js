@@ -5,7 +5,8 @@ import './AutoComplete.css'
 export class Autocomplete extends Component {
   static propTypes = {
     suggestions: PropTypes.instanceOf(Array),
-    handleChange: PropTypes.instanceOf(Function)
+    handleChange: PropTypes.instanceOf(Function),
+    className: PropTypes.string
   }
   static defaultProperty = {
     suggestions: []
@@ -69,6 +70,7 @@ export class Autocomplete extends Component {
           onKeyDown={onKeyDown}
           value={userInput}
           data-lpignore="true"
+          className={this.props.className}
         />
         {showSuggestions && userInput && Object.keys(filteredSuggestions).length !== 0 && (
           <ul className="Autocomplete_suggestions">
@@ -83,7 +85,7 @@ export class Autocomplete extends Component {
         )}
         {showSuggestions && userInput && Object.keys(filteredSuggestions).length === 0 && (
           <div className="Autocomplete_no_suggestions">
-            Not found, adding new song
+            Not found, adding a new song
           </div>
         )}
       </Fragment>
