@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import './AutoComplete.css'
 
 export class Autocomplete extends Component {
   static propTypes = {
@@ -67,6 +68,7 @@ export class Autocomplete extends Component {
           onChange={onChange}
           onKeyDown={onKeyDown}
           value={userInput}
+          data-lpignore="true"
         />
         {showSuggestions && userInput && Object.keys(filteredSuggestions).length !== 0 && (
           <ul className="Autocomplete_suggestions">

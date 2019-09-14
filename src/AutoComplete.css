@@ -1,11 +1,11 @@
-ul.Autocomplete_suggestions {
+.Autocomplete_suggestions {
   padding: 0px;
 }
-.Autocomplete_suggestions > li {
+.Autocomplete_suggestion{
   list-style: none;
   display: block;
   text-align: left;
   line-height: 2;
-  font-size: 20px;
   padding-left: 5px;
+  cursor: pointer;
 }
