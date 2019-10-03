@@ -29,5 +29,4 @@ or
 https://wunder-saber.firebaseapp.com/
 
 ## Todo:
-- CSS to point adding
 - Read points data from image
