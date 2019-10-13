@@ -1,0 +1,39 @@
+.Image_reader {
+  display: flex;
+  flex-direction: column;
+}
+
+.File_uploader {
+  display: flex;
+  flex-direction: column;
+}
+
+.File_uploader_container > input {
+  padding-left: 5px;
+}
+
+.File_uploader_generate_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  font-weight: bold;
+  border-radius: 10px;
+  color: #ffffff;
+  text-transform: uppercase;
+  border: 5px solid transparent;
+  border-bottom-color: rgba(0,0,0,0.35);
+  background: rgba(170, 68, 246, 0.5);
+  cursor: pointer;
+  outline: 0 !important;
+  margin: 10px;
+  padding: 3px 20px;
+  -webkit-appearance: none;
+}
+
+.File_uploader_image, .File_results_image {
+  display: block;
+  max-width:150px;
+  width: auto;
+  height: auto;
+}

@@ -1,7 +1,9 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import uuid from 'uuid'
+import _ from 'lodash'
 import classNames from 'classnames'
 import AutoComplete from './AutoComplete'
+import ImageReader from './ImageReader'
 import {addSong, addRow, getLeaderboardRef} from './firebase'
 import {
   getDefaultDifficulty,
@@ -39,7 +41,7 @@ class AddPoints extends Component {
   }
 
   componentWillUnmount() {
-    this._gameMastersOnlineRef.off()
+    this._leaderboardRef.off()
   }
 
   expand = () => {
@@ -79,6 +81,26 @@ class AddPoints extends Component {
    setDefaultUsername(name)
   }
 
+  autoFillFromImageText = imageText => {
+    const text = imageText.toLowerCase()
+    const {songNames} = this.state
+
+    const foundSongName = songNames.find(songName => {
+      var songNameRegex = new RegExp(songName.value, 'gi')
+      return text.match(songNameRegex)
+    })
+    if (!_.isEmpty(foundSongName)) {
+      this.handleSongChange(foundSongName.value, foundSongName.id)
+    }
+
+    const pointRegex = /[0-9]{3}( ){0,1}[0-9]{3}/g
+    const foundPoints = text.match(pointRegex)
+    if (foundPoints && foundPoints.length > 0) {
+      const points = foundPoints[0].replace(/\s/g, '')
+      this.setState({points})
+    }
+  }
+
   render() {
     const {
       expanded,
@@ -96,11 +118,15 @@ class AddPoints extends Component {
           <div className='Add_points_button Add_points_button_open' onClick={this.expand}>+</div>
         }
         { expanded &&
-          <Fragment>
-            <form className='Add_points_form' onSubmit={this.handleSubmit}>
+          <div className='Add_points_form'>
+            <ImageReader
+              autoFillFromImageText={this.autoFillFromImageText}
+            />
+            <form onSubmit={this.handleSubmit}>
               <div className='Add_points_row'>
                 <div className='Add_points_label'>Song</div>
                 <AutoComplete
+                  userInput={songName}
                   suggestions={songNames}
                   handleChange={this.handleSongChange}
                   className={classNames('Add_points_input', { 'Add_points_input_error': formError && !songName })}
@@ -141,7 +167,7 @@ class AddPoints extends Component {
               <input className='Add_points_submit' type='submit' value='Submit' />
             </form>
             <div className='Add_points_button Add_points_button_close' onClick={this.expand}>-</div>
-          </Fragment>
+          </div>
         }
       </div>
     )

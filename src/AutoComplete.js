@@ -6,7 +6,8 @@ export class Autocomplete extends Component {
   static propTypes = {
     suggestions: PropTypes.instanceOf(Array),
     handleChange: PropTypes.instanceOf(Function),
-    className: PropTypes.string
+    className: PropTypes.string,
+    userInput: PropTypes.string
   }
   static defaultProperty = {
     suggestions: []
@@ -19,6 +20,12 @@ export class Autocomplete extends Component {
       showSuggestions: false,
       userInput: '',
       songId: null
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.userInput !== prevProps.userInput) {
+      this.setState({userInput: this.props.userInput})
     }
   }
 

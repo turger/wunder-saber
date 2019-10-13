@@ -21,7 +21,7 @@ class Leaderboard extends Component {
   }
 
   componentWillUnmount() {
-    this._gameMastersOnlineRef.off()
+    this._leaderboardRef.off()
   }
 
   sortByBestAndSlice = (data) => {
