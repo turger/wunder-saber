@@ -11,20 +11,21 @@ var config = {
 }
 
 const fb = firebase.initializeApp(config)
+const leaderboard = process.env.NODE_ENV === 'development' ? 'leaderboard-dev' : 'leaderboard'
 
 export const getLeaderboardData = () =>
-  fb.database().ref(`leaderboard`).once('value').then((snap) => snap.val())
+  fb.database().ref(leaderboard).once('value').then((snap) => snap.val())
 
-export const getLeaderboardRef = () => fb.database().ref(`leaderboard`)
+export const getLeaderboardRef = () => fb.database().ref(leaderboard)
 
 export const addSong = (songId, songName) => {
-  fb.database().ref(`leaderboard/${songId}`).set({songId: songId, songName})
+  fb.database().ref(`${leaderboard}/${songId}`).set({songId: songId, songName})
 }
 
 export const addRow = (songId, rowId, name, points, level) => {
-  fb.database().ref(`leaderboard/${songId}/rows/${rowId}`).set({rowId: rowId, name, points, level})
+  fb.database().ref(`${leaderboard}/${songId}/rows/${rowId}`).set({rowId: rowId, name, points, level})
 }
 
 export const removeRow = (songId, rowId) => {
-  fb.database().ref(`leaderboard/${songId}/rows/${rowId}`).remove()
+  fb.database().ref(`${leaderboard}/${songId}/rows/${rowId}`).remove()
 }
