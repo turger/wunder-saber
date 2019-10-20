@@ -10,7 +10,7 @@ class ImageReader extends Component {
     this.state = {
       upload: null,
       mimeType: null,
-      editedUpload: null,
+      editedUploads: [],
       document: {},
       loading: false
     }
@@ -21,58 +21,77 @@ class ImageReader extends Component {
     if (file) {
       const upload = URL.createObjectURL(event.target.files[0])
       this.setState({upload, mimeType: file.type})
+
+      this.setState({
+        upload, mimeType: file.type
+      }, async () => {
+        await this.generateText()
+      })
     } else {
       this.setState({upload: null})
     }
   }
 
-  generateText = async () => {
+  editImage = async (brightness, contrast) => {
     const {upload, mimeType} = this.state
+    const img = await jimp.read(upload)
+      .then(image => {
+        image
+          .cover(1000, 1000)
+          .brightness(brightness)
+          .contrast(contrast)
+        return image
+      })
+      .catch('Image edit error', console.error)
+    const buffer = await img.getBufferAsync(mimeType)
+    return new Blob([buffer])
+  }
+
+  generateText = async () => {
+    const {upload} = this.state
     if (!upload) return
     this.setState({loading: true})
 
     // First edit image to make it easier to read for tesseract
-    const img = await jimp.read(upload)
-      .then(image => {
-        image
-          .normalize()
-          .brightness(-0.5)
-          .contrast(0.8)
-        return image
-      })
-      .catch('Image edit error', console.error)
+    const [blob1, blob2, blob3] = await Promise.all([
+      this.editImage(-0.7, 0),
+      this.editImage(-0.5, 0.2),
+      this.editImage(-0.5, 0.6)
+    ])
 
-    const buffer = await img.getBufferAsync(mimeType)
-    const blob = new Blob([buffer])
+    this.setState({editedUploads: [URL.createObjectURL(blob1), URL.createObjectURL(blob2), URL.createObjectURL(blob3)]})
 
-    this.setState({editedUpload: URL.createObjectURL(blob)})
-
+    let text = ''
+    let confidence = ''
     // Read text from image
-    Tesseract.recognize(blob, {
-      lang: 'eng'
+    await Promise.all([blob1, blob2, blob3].map(blob =>
+      Tesseract.recognize(blob, 'eng')
+        .catch(err => {
+          console.error(err)
+        })
+        .then(result => {
+          console.log('RESULT', result)
+          confidence = `${confidence}-${result.data.confidence}`
+          text = `${text}-${result.data.text}`
+        })
+    ))
+
+    this.props.autoFillFromImageText(text)
+    this.setState({
+      document: {
+        text: text.slice(1, -1),
+        confidence: confidence.slice(1, -1),
+      },
+      loading: false
     })
-    .catch(err => {
-      console.error(err)
-    })
-    .then(result => {
-      let confidence = result.confidence
-      let text = result.text
-      this.props.autoFillFromImageText(text)
-      this.setState({
-        document: {
-          text: text,
-          confidence: confidence,
-        },
-        loading: false
-      })
-    })
+
   }
 
   render() {
     const {
       upload,
       document,
-      editedUpload,
+      editedUploads,
       loading
     } = this.state
 
@@ -84,14 +103,17 @@ class ImageReader extends Component {
             <input type='file' onChange={this.handleChange} />
           </label>
           { upload && <img className='File_uploader_image' alt='upload' src={upload} /> }
-          <button className='File_uploader_generate_button' onClick={this.generateText}>Generate</button>
         </div>
 
         { loading && <div>(loading spinner here)</div> }
 
-        {!loading && !_.isEmpty(document) && editedUpload &&
+        {!loading && !_.isEmpty(document) && editedUploads.length > 0 &&
           <div className='File_results'>
-            <img className='File_results_image' alt='editedUpload' src={editedUpload} />
+            <div className='File_results_images'>
+              { editedUploads.map(editedUpload =>
+                <img className='File_results_image' alt='editedUpload' src={editedUpload} />
+              )}
+            </div>
             <div className='File_results_score'>
               Confidence Score: {document.confidence}
             </div>

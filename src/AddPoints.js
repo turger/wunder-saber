@@ -86,14 +86,14 @@ class AddPoints extends Component {
     const {songNames} = this.state
 
     const foundSongName = songNames.find(songName => {
-      var songNameRegex = new RegExp(songName.value, 'gi')
+      const songNameRegex = new RegExp(songName.value, 'gi')
       return text.match(songNameRegex)
     })
     if (!_.isEmpty(foundSongName)) {
       this.handleSongChange(foundSongName.value, foundSongName.id)
     }
 
-    const pointRegex = /[0-9]{3}( ){0,1}[0-9]{3}/g
+    const pointRegex = /( )[0-9]{3}( ){0,1}[0-9]{3}( )/g
     const foundPoints = text.match(pointRegex)
     if (foundPoints && foundPoints.length > 0) {
       const points = foundPoints[0].replace(/\s/g, '')

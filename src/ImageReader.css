@@ -31,9 +31,20 @@
   -webkit-appearance: none;
 }
 
-.File_uploader_image, .File_results_image {
+.File_uploader_image {
   display: block;
-  max-width:150px;
-  width: auto;
-  height: auto;
+  max-height: 150px;
+  width: 150px;
+}
+
+.File_results_images {
+  display: flex;
+  flex-direction: row;
+  padding: 5px 0;
+}
+
+.File_results_image {
+  display: block;
+  max-height: 50px;
+  width: 50px;
 }
